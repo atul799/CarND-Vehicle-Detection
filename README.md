@@ -51,9 +51,9 @@ No special method is applied to shiffle tha data,train_test_split from sklearn m
 Color spaces such as HSV/YUV and YCrCb is explored and YUVC/YCrCB seems to identify color features well.
 
 
-<img src="../output_images/cspace_rgb.png" alt="RGB color space" width="400" height="400"><img src="../output_images/cspace_hsv.png" alt="hsv color space" width="400" height="400">
+<img src="./output_images/cspace_rgb.png" alt="RGB color space" width="400" height="400"><img src="./output_images/cspace_hsv.png" alt="hsv color space" width="400" height="400">
 
-<img src="../output_images/cspace_yuv.png" alt="yuv color space" width="400" height="400"><img src="../output_images/cspace_ycrcb.png" alt="YCrCb color space" width="400" height="400">
+<img src="./output_images/cspace_yuv.png" alt="yuv color space" width="400" height="400"><img src="./output_images/cspace_ycrcb.png" alt="YCrCb color space" width="400" height="400">
 
 YCrCb color space is chosen to extract features on in this project as it shows grouping of features promonently.
 
@@ -66,14 +66,14 @@ The features used are:
 ** Color Histogram: **
  The color channels of an image in given space are divided into bins and hence represents color combinations and saturation/hue/brightness combinations to train classifier on. Here is an example of color histogram:
 
-<img src="../output_images/color_hist_study.png" alt="yuv color space" width="800" height="800">
+<img src="./output_images/color_hist_study.png" alt="yuv color space" width="800" height="800">
 
 
 ** Spatial binning: **
 
 Spatial binning: Color itself doesn't represent a significant learning feature set as cars can be of many different colors, the spatial appearence of vehicle in an image is also a useful metric that can be used as a feature. The car/notcar image is resized and the value of pixels are stored as feature sets. Here is an example:
 
-<img src="../output_images/image_for_spatial_bin.png" alt="yuv color space" width="400" height="400"><img src="../output_images/spatial_bin_Study.png" alt="yuv color space" width="800" height="800">
+<img src="./output_images/image_for_spatial_bin.png" alt="yuv color space" width="400" height="400"><img src="./output_images/spatial_bin_Study.png" alt="yuv color space" width="800" height="800">
 
 
 
@@ -86,19 +86,19 @@ More info about HoG can be found at:[Youtube link](https://www.youtube.com/watch
 
 Here are some HOG features from different color spaces:
 
-<img src="../output_images/hog_HSV.png" alt="hog_hsv" width="400" height="800"><img src="../output_images/hog_rgb.png" alt="hog_rgb" width="400" height="800">
+<img src="./output_images/hog_HSV.png" alt="hog_hsv" width="400" height="800"><img src="./output_images/hog_rgb.png" alt="hog_rgb" width="400" height="800">
 
-<img src="../output_images/hog_yuv.png" alt="hog_yuv" width="400" height="800"><img src="../output_images/hog_rgb.png" alt="hog_ycrcb" width="400" height="800">
+<img src="./output_images/hog_yuv.png" alt="hog_yuv" width="400" height="800"><img src="./output_images/hog_rgb.png" alt="hog_ycrcb" width="400" height="800">
 
 ** HOG features **
 
 The choice of bins (orientation) of directtion,pixels per cell and blocks per cell are hyperparameters for HOG, value of 11 for direction,8 bfor pix per cell and 2 blocks per cell was found to be optimum.
 
-<img src="../output_images/hog_ycrcb_8_8_2.png" alt="hog_ycrcb_8_8_2" width="600" height="600">
+<img src="./output_images/hog_ycrcb_8_8_2.png" alt="hog_ycrcb_8_8_2" width="600" height="600">
 
 ** orient=8,pix_cell=8,blocks_per_cell=2**
 
-<img src="../output_images/hog_ycrcb_11_8_2.png" alt="hog_ycrcb_8_8_2" width="600" height="600">
+<img src="./output_images/hog_ycrcb_11_8_2.png" alt="hog_ycrcb_8_8_2" width="600" height="600">
 
 **orient=11,pix_cell=8,blocks_per_cell=2**
 
@@ -107,15 +107,15 @@ The choice of bins (orientation) of directtion,pixels per cell and blocks per ce
 A feature set is prepared based on color histogram/spatial bin and HOG is prepared. To reduce tome for training and prediction one or more combination of these features can be deployed.
 Here is example of features extracted:
 
-<img src="../output_images/cars_0th.png" alt="cars features" width="400" height="400">
+<img src="./output_images/cars_0th.png" alt="cars features" width="400" height="400">
 
-<img src="../output_images/color_spatial_hog_cars.png" alt="cars features" width="1000" height="400">
+<img src="./output_images/color_spatial_hog_cars.png" alt="cars features" width="1000" height="400">
 
 **feature for an example cars image**
 
-<img src="../output_images/notcars_0th.png" alt="notcars features" width="400" height="400">
+<img src="./output_images/notcars_0th.png" alt="notcars features" width="400" height="400">
 
-<img src="../output_images/color_spatial_hog_notcars.png" alt="cars features" width="1000" height="400">
+<img src="./output_images/color_spatial_hog_notcars.png" alt="cars features" width="1000" height="400">
 
 **feature for an example non-cars image**
 
