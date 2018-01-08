@@ -33,7 +33,7 @@ The project implementation pipeline in this project consist of following steps:
 6. Smoothen the bounding boxes based on previous frame results to remove false positives
 
 
-#Analyze images and find an appropriate color space to extract useful features
+# Analyze images and find an appropriate color space to extract useful features
 ---
 For this project, a labeled dataset is provided.These example images come from a combination of the [GTI vehicle image database](http://www.gti.ssr.upm.es/data/Vehicle_database.html), the [KITTI vision benchmark suite](http://www.cvlibs.net/datasets/kitti/). There are few examples extracted from the project video itself that are used for building and experimenting various functions in the project.
 
@@ -41,7 +41,7 @@ Here is a snapshot of images from labeled dataset.
 
 <img src="../output_images/cars_not_cars.png" alt="An image with Vehicles annotated" width="800" height="600">
 
-There are **8792**  car images and **8968**noncar images in the dataset.These pictures are of 64x64 pixel size. 
+There are **8792**  car images and **8968** noncar images in the dataset.These pictures are of 64x64 pixel size. 
 
 A suggestion has been made to be careful with data as they are time-series.
 ***For the project vehicles dataset, the GTI* folders contain time-series data. In the KITTI folder, you may see the same vehicle appear more than once, but typically under significantly different lighting/angle from other instances.While it is possible to achieve a sufficiently good result on the project without worrying about time-series issues, if you really want to optimize your classifier, you should devise a train/test split that avoids having nearly identical images in both your training and test sets. This means extracting the time-series tracks from the GTI data and separating the images manually to make sure train and test images are sufficiently different from one another.***
@@ -58,18 +58,19 @@ Color spaces such as HSV/YUV and YCrCb is explored and YUVC/YCrCB seems to ident
 YCrCb color space is chosen to extract features on in this project as it shows grouping of features promonently.
 
 
-#Features extraction (features based on color histogram,spatial binning and HOG )
+# Features extraction (features based on color histogram,spatial binning and HOG )
 ---
 The classifier needs to be trained of features that reprent car or notcar data with important features.
 The features used are:
 
-**Color Histogram:**
+** Color Histogram: **
  The color channels of an image in given space are divided into bins and hence represents color combinations and saturation/hue/brightness combinations to train classifier on. Here is an example of color histogram:
 
 <img src="../output_images/color_hist_study.png" alt="yuv color space" width="800" height="800">
 
 
-**Spatial binning:**
+** Spatial binning: **
+
 Spatial binning: Color itself doesn't represent a significant learning feature set as cars can be of many different colors, the spatial appearence of vehicle in an image is also a useful metric that can be used as a feature. The car/notcar image is resized and the value of pixels are stored as feature sets. Here is an example:
 
 <img src="../output_images/image_for_spatial_bin.png" alt="yuv color space" width="400" height="400"><img src="../output_images/spatial_bin_Study.png" alt="yuv color space" width="800" height="800">
@@ -77,10 +78,11 @@ Spatial binning: Color itself doesn't represent a significant learning feature s
 
 
 
-**Histogram of Oriented Gradients (HOG):**
+** Histogram of Oriented Gradients (HOG): **
+
 HOG is a way to extract meaningful features of a image independent of color values. It captures the “general aspect” of cars, not the “specific details” of it. It is a gradient based method same class as Soebel used in previuos project but the kernel applied here is 1D (-1,0,1).The HOG method finds color gradient direction in cells (image divided in set of pixels) and then creates a histogram of gradient directions as feature set. Normalization can be applied based on group of cells called block. This makes the feature set robus to variations such as shadows.If normalization is applied, the features set  may be greater than number of cells.
 
-Mpre info about HoG can be found at:[Youtube link](https://www.youtube.com/watch?v=7S5qXET179I) and [here](http://lear.inrialpes.fr/people/triggs/pubs/Dalal-cvpr05.pdf)
+More info about HoG can be found at:[Youtube link](https://www.youtube.com/watch?v=7S5qXET179I) and [here](http://lear.inrialpes.fr/people/triggs/pubs/Dalal-cvpr05.pdf)
 
 Here are some HOG features from different color spaces:
 
@@ -88,13 +90,13 @@ Here are some HOG features from different color spaces:
 
 <img src="../output_images/hog_yuv.png" alt="hog_yuv" width="400" height="800"><img src="../output_images/hog_rgb.png" alt="hog_ycrcb" width="400" height="800">
 
-**HOG images**
+** HOG features **
 
 The choice of bins (orientation) of directtion,pixels per cell and blocks per cell are hyperparameters for HOG, value of 11 for direction,8 bfor pix per cell and 2 blocks per cell was found to be optimum.
 
 <img src="../output_images/hog_ycrcb_8_8_2.png" alt="hog_ycrcb_8_8_2" width="600" height="600">
 
-**orient=8,pix_cell=8,blocks_per_cell=2**
+** orient=8,pix_cell=8,blocks_per_cell=2**
 
 <img src="../output_images/hog_ycrcb_11_8_2.png" alt="hog_ycrcb_8_8_2" width="600" height="600">
 
@@ -125,7 +127,8 @@ The data is split into train and validation set using test_train_split method of
 
 
 
-#Train a Support Vector Machine classifier
+# Train a Support Vector Machine classifier
+---
 The next step is to train a classifier. 
 A support vector machine with linear kernel is used as classifier. Support vector machine is large margin classifier. 
 RBF and Linear kernel was experimented with, the accuracy reached with rbf kernel was 98.7% and with Linear about 98.3% The linear kernel is used in the project.However, it took 157.22 seconds to train svm with rbf kernel and 14.1 seconds for Linear kernel.
@@ -134,13 +137,13 @@ For the purpose of this project Linear kernel SVM is used from imported from skl
 The classifier and associated parameters for features including StandardScalar was saved in a pickle file to be used while applying on the image/videostreams for vehicle detection.
 
 
-#Implement a sliding-window to detect Vehicle(s):
-
+# Implement a sliding-window to detect Vehicle(s):
+---
 The sliding window method that uses HOG subsampling described in the lectures of the project is used to detect vehicles. The function implemented is called 'find_cars' and it combines  feature extraction (color_hist,spatial_bin and HOG) with a sliding window search. However, it extracts HOG features only once on the full image or selected image area and then subsamples according to the window applied. This method is more effiecient than generating all the features incl. HOG for every window in the sliding-window method. The color and  spatial bin feature is also extracted and concatenated along with HOG features to makeup the feature list to predict if the window matches a vehicle signature using trained model described in previous section. The image patch in the widnow is scaled to 64x64 pixel size which was the size of images in the training set.
 
 
-#Generate Heatmap and threshold to remove false positives
-
+# Generate Heatmap and threshold to remove false positives
+---
 A variation on the lecture function (suggested in lecture) is implementation of multiple windows sizes  for searching vehicles. This is important as depending on the location (distance away) of the vehicles from the camera they may appear bigger (closer) or smaller (farther).Also, the upper part of the image will not ,typically, have vehicles but rather landscape, so, about a little less that half of the top pixels are excluded from vehicles search. This saves processing time.
 
 ![picture alt](./output_images/bbox_annotated_multi_winsize.png) *Vehicles detected with multi sized window*
@@ -157,16 +160,18 @@ The **scipy.ndimage.measurements.label()** function is used to collect spatially
 
 
 
-#Smoothen the bounding boxes based on previous frame results to remove false positives
+# Smoothen the bounding boxes based on previous frame results to remove false positives
+---
 The implementation based on above steps performs well except that in few images even after applying heat map false positives are found in video stream pipeline. In the pipeline for video frame implementation, a class for frame tracking(Frame_Detect) is implemented. The idea is to use information over multiple frames and apply knowledge from previous frames to add to decision of vehicle match (this is an additional method to heatmap) to remove false positives. The information used in the implementation is averaging heatmap bounding boxes over certain number of frames. 
 However, other method such as number of cars detected in previous frames and/or combination of such information over multiple frames can be used to make vehicle match prediction robust.
 
-###To summarize
-
+### To summarize
+---
 Color histogram (32 bins),spatial binning(size 32x32) and HOG (11 orientations/8 pix per cell/2 cells per block) methods are used to generate features to train a Linear SVM and sliding window method in combination with HOG subsampling to generate heatmap and averaging heatmap over multiple frames is used to detect vehicle in given image/videostream.
 
 
-#Pipeline
+# Pipeline
+---
 The pipeline is a function which puts all the above steps together and applies to the frames on the videostream.
 Here is an example of vehicle detection on the test_video, on the top left is the depiction of heat map.
 
@@ -174,7 +179,8 @@ Here is an example of vehicle detection on the test_video, on the top left is th
 
 
 
-#Files and Results:
+# Files and Results
+---
 
 The project implementation is in a jupyter notebook: [Vehicle_Detection.ipynb](Vehicle_Detection.ipynb)
 
@@ -193,8 +199,8 @@ unit tests for each of the functions used in the project can be found in main di
 
 
 
-#Summary and Discussion 
-
+# Summary and Discussion 
+---
 The major problem faced  in this project are the false positives.Too many window sizes increases false positives while too few missed detections. The cars from opposite lane and rails on the side of road are often misclassified. Improving SVM accuracy using other kernels and increasing sample size for training may be useful. The dataset has about 9000 samples of cars/nocars each. Augmenting while training is an option that is not explored in this project.However, this may increase processing time on frames. Averaging detections over previous frames mitigates the effect of the mis-detection, but the problem is vehicles changing position  are delayed in detection. 
 
 The implementation can be made more robust by tracking few more items apart from heatmap,boundingboxes over frames such as number of cars in consecutive frames, prediction of vehicle positions. 
