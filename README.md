@@ -39,7 +39,7 @@ For this project, a labeled dataset is provided.These example images come from a
 
 Here is a snapshot of images from labeled dataset.
 
-<img src="../output_images/cars_not_cars.png" alt="An image with Vehicles annotated" width="800" height="600">
+<img src="./output_images/cars_not_cars.png" alt="An image with Vehicles annotated" width="800" height="600">
 
 There are **8792**  car images and **8968** noncar images in the dataset.These pictures are of 64x64 pixel size. 
 
