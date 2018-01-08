@@ -63,22 +63,22 @@ YCrCb color space is chosen to extract features on in this project as it shows g
 The classifier needs to be trained of features that reprent car or notcar data with important features.
 The features used are:
 
-** Color Histogram: **
+**Color Histogram:**
  The color channels of an image in given space are divided into bins and hence represents color combinations and saturation/hue/brightness combinations to train classifier on. Here is an example of color histogram:
 
 <img src="./output_images/color_hist_study.png" alt="yuv color space" width="800" height="800">
 
 
-** Spatial binning: **
+**Spatial binning:**
 
 Spatial binning: Color itself doesn't represent a significant learning feature set as cars can be of many different colors, the spatial appearence of vehicle in an image is also a useful metric that can be used as a feature. The car/notcar image is resized and the value of pixels are stored as feature sets. Here is an example:
 
-<img src="./output_images/image_for_spatial_bin.png" alt="yuv color space" width="400" height="400"><img src="./output_images/spatial_bin_Study.png" alt="yuv color space" width="800" height="800">
+<img src="./output_images/image_for_spatial_bin.png" alt="yuv color space" width="400" height="400"><img src="./output_images/spatial_bin_study.png" alt="yuv color space" width="800" height="800">
 
 
 
 
-** Histogram of Oriented Gradients (HOG): **
+**Histogram of Oriented Gradients (HOG):**
 
 HOG is a way to extract meaningful features of a image independent of color values. It captures the “general aspect” of cars, not the “specific details” of it. It is a gradient based method same class as Soebel used in previuos project but the kernel applied here is 1D (-1,0,1).The HOG method finds color gradient direction in cells (image divided in set of pixels) and then creates a histogram of gradient directions as feature set. Normalization can be applied based on group of cells called block. This makes the feature set robus to variations such as shadows.If normalization is applied, the features set  may be greater than number of cells.
 
@@ -90,13 +90,13 @@ Here are some HOG features from different color spaces:
 
 <img src="./output_images/hog_yuv.png" alt="hog_yuv" width="400" height="800"><img src="./output_images/hog_rgb.png" alt="hog_ycrcb" width="400" height="800">
 
-** HOG features **
+**HOG features**
 
 The choice of bins (orientation) of directtion,pixels per cell and blocks per cell are hyperparameters for HOG, value of 11 for direction,8 bfor pix per cell and 2 blocks per cell was found to be optimum.
 
 <img src="./output_images/hog_ycrcb_8_8_2.png" alt="hog_ycrcb_8_8_2" width="600" height="600">
 
-** orient=8,pix_cell=8,blocks_per_cell=2**
+**orient=8,pix_cell=8,blocks_per_cell=2**
 
 <img src="./output_images/hog_ycrcb_11_8_2.png" alt="hog_ycrcb_8_8_2" width="600" height="600">
 
