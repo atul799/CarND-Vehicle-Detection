@@ -173,7 +173,7 @@ Color histogram (32 bins),spatial binning(size 32x32) and HOG (11 orientations/8
 # Pipeline
 ---
 The pipeline is a function which puts all the above steps together and applies to the frames on the videostream.
-Here is an example of vehicle detection on the test_video, on the top left is the depiction of heat map.
+Here is an example of vehicle detection on the test_video, on the top left is the heatmap for each frame.
 
 ![picture alt](./output_images/test_out.gif) *Vehicle detection*
 
@@ -208,6 +208,8 @@ The implementation can be made more robust by tracking few more items apart from
 The other important aspect to be careful about (Tips and Tricks section of lectures) is the difference between image values as readin by opencv and matplotlib.images modules. images needs to scaled appropriately, opencv imread reads in 0-255 range for images though in BGR space, mpimg imread reads png images as 0-1, which is problem for color histogram bins if not scaled.
 
 Shuffling of data is also suggested as the sample data for training is time-series but is not implemented in this project.
+
+In some of experiments, HOG only feature extraction performed as well as using all 3 methods and required much less time to process project video. However, submitted project video uses all three methods and requires about 17mins  to process project_video.
 
 
 
